@@ -63,7 +63,7 @@ fun main(args: Array<String>) {
     val topology = trainingData.topology
 
     val activationFunction = SimpleActivationFunction.TANH
-    val knots = Knots(-10.0, 10.0, 100, function = { activationFunction(it) })
+    val knots = Knots(-20.0, 20.0, 200, function = { activationFunction(it) })
     val catMulRomSplineActivationFunction = CatmulRomSpline(knots)
 
     val simpleNetwork = DefaultNetwork(activationFunction, *topology)

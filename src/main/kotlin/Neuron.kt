@@ -5,13 +5,11 @@ class Neuron(private val index: Int, val activationFunction: ActivationFunction,
     val connections: Connections = Array(outputCount, init = { Connection.random() })
     private var gradient: Double = 0.0
 
-    private fun sumDow(nextLayer: Layer) =
-            (0 until nextLayer.size - 1).sumByDouble { connections[it].weight * nextLayer[it]
-                    .gradient }
-
     internal fun feedForward(previousLayer: Layer) {
-        val sum = (0 until previousLayer.size).sumByDouble { previousLayer[it].output *
-                previousLayer[it].connections[index].weight }
+        val sum = (0 until previousLayer.size).sumByDouble {
+            previousLayer[it].output *
+                    previousLayer[it].connections[index].weight
+        }
         output = activationFunction(sum)
     }
 
@@ -21,9 +19,13 @@ class Neuron(private val index: Int, val activationFunction: ActivationFunction,
     }
 
     internal fun hiddenGradients(nextLayer: Layer) {
-        val dow = sumDow(nextLayer)
+        val dow = (0 until nextLayer.size - 1).sumByDouble {
+            connections[it].weight * nextLayer[it].gradient
+        }
         gradient = dow * activationFunction.derivative(output)
     }
+
+
 
     internal fun updateInputWeights(previousLayer: Layer) {
         previousLayer.forEach {
